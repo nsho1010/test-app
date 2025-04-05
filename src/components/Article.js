@@ -1,9 +1,8 @@
 import React from "react";
 import { posts } from "../data/posts";
+import { format } from "date-fns";
 
 const Article = () => {
-  console.log(posts);
-
   return (
     <div className="flex flex-col justify-center items-center min-h-screen ">
       {posts.map((post, index) => (
@@ -12,7 +11,9 @@ const Article = () => {
           className="border-2  border-gray-300 w-full max-w-3xl mx-auto p-4 mb-8"
         >
           <div className="flex justify-between">
-            <p className="text-gray-500">{post.createdAt}</p>
+            <p className="text-gray-500">
+              {format(new Date(post.createdAt), "yyyy/MM/dd")}
+            </p>
             <div className="flex mr-8">
               {post.categories.map((category, catIndex) => (
                 <div
@@ -27,7 +28,7 @@ const Article = () => {
           <div>
             <h2 className="text-2xl font-bold mt-2 mb-4">{post.title}</h2>
             <div
-              className="line-clamp-2"
+              className="line-clamp-2 text-base"
               dangerouslySetInnerHTML={{
                 __html:
                   post.content.length > 150

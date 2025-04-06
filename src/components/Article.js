@@ -30,10 +30,7 @@ const Article = () => {
             <div
               className="line-clamp-2 text-base"
               dangerouslySetInnerHTML={{
-                __html:
-                  post.content.length > 150
-                    ? post.content.substring(0, 150) + "..."
-                    : post.content,
+                __html: post.content,
               }}
             ></div>
           </div>

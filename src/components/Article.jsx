@@ -1,34 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useGetAllPosts } from "../hooks/useGetAllPosts";
 
 const Article = () => {
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(null);
+  const { posts, error } = useGetAllPosts();
 
-  useEffect(() => {
-    const getAllPosts = async () => {
-      try {
-        const res = await axios.get(
-          `https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts`
-        );
-        setPosts(res.data.posts);
-      } catch (error) {
-        setError("記事一覧が取得に失敗しました。");
-      }
-    };
+  if (error) return <div>{error}</div>;
 
-    getAllPosts();
-  }, []);
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  if (!posts) {
-    return <div>読み込み中...</div>;
-  }
+  if (!posts) return <div>読み込み中...</div>;
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen ">

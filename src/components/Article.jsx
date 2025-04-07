@@ -7,11 +7,8 @@ const Article = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen ">
       {posts.map((post, index) => (
-        <Link to={`/posts/${index}`}>
-          <div
-            key={index}
-            className="border-2  border-gray-300 w-full max-w-3xl mx-auto p-4 mb-8"
-          >
+        <Link key={index} to={`/posts/${post.id}`}>
+          <div className="border-2  border-gray-300 w-full max-w-3xl mx-auto p-4 mb-8">
             <div className="flex justify-between">
               <p className="text-gray-500">
                 {format(new Date(post.createdAt), "yyyy/MM/dd")}

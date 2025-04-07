@@ -5,8 +5,8 @@ import { format } from "date-fns";
 
 const ArticleDetail = () => {
   const { id } = useParams();
-  const post = posts[id];
-  console.log(post);
+  const numericId = parseInt(id, 10);
+  const post = posts.find((post) => post.id === numericId);
 
   if (!post) {
     return <div>記事が存在しません。</div>;

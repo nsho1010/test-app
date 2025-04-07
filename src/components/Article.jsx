@@ -1,9 +1,27 @@
-import React from "react";
-import { posts } from "../data/posts";
+import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Article = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await axios.get(
+          `https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts`
+        );
+        console.log(res.data.posts);
+        setPosts(res.data.posts);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getData();
+  }, []);
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen ">
       {posts.map((post, index) => (

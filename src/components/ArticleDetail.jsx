@@ -1,16 +1,16 @@
-import React from "react";
 import { useParams } from "react-router-dom";
-import { posts } from "../data/posts";
 import { format } from "date-fns";
+import { useGetPost } from "../hooks/useGetPost";
 
 const ArticleDetail = () => {
   const { id } = useParams();
-  const numericId = parseInt(id, 10);
-  const post = posts.find((post) => post.id === numericId);
+  const { post, error, isLoading } = useGetPost(id);
 
-  if (!post) {
-    return <div>記事が存在しません。</div>;
-  }
+  if (isLoading) return <div>読み込み中...</div>;
+
+  if (error) return <div>{error}</div>;
+
+  if (!post) return <div>記事が見つかりませんでした。</div>;
 
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col items-center pt-16 pb-8 min-h-[calc(100vh-4rem)]">

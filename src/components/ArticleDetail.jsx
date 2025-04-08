@@ -4,11 +4,13 @@ import { useGetPost } from "../hooks/useGetPost";
 
 const ArticleDetail = () => {
   const { id } = useParams();
-  const { post, error } = useGetPost(id);
+  const { post, error, isLoading } = useGetPost(id);
+
+  if (isLoading) return <div>読み込み中...</div>;
 
   if (error) return <div>{error}</div>;
 
-  if (!post) return <div>読み込み中...</div>;
+  if (!post) return <div>記事が見つかりませんでした。</div>;
 
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col items-center pt-16 pb-8 min-h-[calc(100vh-4rem)]">

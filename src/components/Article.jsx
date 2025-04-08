@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { useGetAllPosts } from "../hooks/useGetAllPosts";
 
 const Article = () => {
-  const { posts, error } = useGetAllPosts();
+  const { posts, error, isLoading } = useGetAllPosts();
+
+  if (isLoading) return <div>読み込み中...</div>;
 
   if (error) return <div>{error}</div>;
 
-  if (!posts) return <div>読み込み中...</div>;
+  if (posts.length === 0) return <div>記事がありません。</div>;
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen ">

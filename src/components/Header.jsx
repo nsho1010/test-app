@@ -9,7 +9,9 @@ const Header = () => {
           <h1 className="font-bold text-xl">Blog</h1>
         </Link>
         <ul className="font-bold text-xl">
-          <li>お問い合わせ</li>
+          <Link to="/contact">
+            <li>お問い合わせ</li>
+          </Link>
         </ul>
       </div>
     </header>

@@ -1,47 +1,8 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useContactForm } from "../hooks/useContactForm";
 
 const Contact = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-
-  const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    try {
-      const res = await axios.post(
-        "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/contacts",
-        {
-          name: data.name,
-          email: data.email,
-          message: data.detail,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (res.status === 200) {
-        alert("お問い合わせを送信しました。ありがとうございます！");
-        reset();
-      } else {
-        alert("送信に失敗しました。時間をおいて再度お試しください。");
-      }
-    } catch (error) {
-      console.error("送信エラー:", error);
-      alert("エラーが発生しました。ネットワークをご確認ください。");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const { register, handleSubmit, errors, isSubmitting, reset, onSubmit } =
+    useContactForm();
 
   return (
     <div className="flex justify-center items-start w-4/5 mx-auto mt-10">

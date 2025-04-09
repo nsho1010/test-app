@@ -1,15 +1,46 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+    try {
+      const res = await axios.post(
+        "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/contacts",
+        {
+          name: data.name,
+          email: data.email,
+          message: data.detail,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        alert("お問い合わせを送信しました。ありがとうございます！");
+        reset();
+      } else {
+        alert("送信に失敗しました。時間をおいて再度お試しください。");
+      }
+    } catch (error) {
+      console.error("送信エラー:", error);
+      alert("エラーが発生しました。ネットワークをご確認ください。");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -26,6 +57,7 @@ const Contact = () => {
             <input
               id="name"
               className="border border-gray-300 rounded-lg px-4 py-2 w-full"
+              disabled={isSubmitting}
               {...register("name", {
                 required: "お名前は必須です",
                 maxLength: {
@@ -49,6 +81,7 @@ const Contact = () => {
             <input
               id="email"
               className="border border-gray-300 rounded-lg px-4 py-2 w-full"
+              disabled={isSubmitting}
               {...register("email", {
                 required: "メールアドレスは必須です",
                 pattern: {
@@ -75,6 +108,7 @@ const Contact = () => {
               id="detail"
               rows={6}
               className="border border-gray-300 rounded-lg px-4 py-2 w-full"
+              disabled={isSubmitting}
               {...register("detail", {
                 maxLength: {
                   value: 500,
@@ -94,13 +128,20 @@ const Contact = () => {
         <div className="flex justify-center mt-8 col-span-4">
           <button
             type="submit"
-            className="bg-gray-800 font-bold text-white rounded-lg px-6 py-2 text-lg mr-4"
+            className={`bg-gray-800 text-white px-6 py-2 rounded-lg font-bold text-lg mr-4 ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isSubmitting}
           >
             送信
           </button>
           <button
-            type="reset"
-            className="bg-gray-200 font-bold rounded-lg px-6 py-2 text-lg"
+            type="button"
+            onClick={() => reset()}
+            className={`bg-gray-200 font-bold rounded-lg px-6 py-2 text-lg ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isSubmitting}
           >
             クリア
           </button>
